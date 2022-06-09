@@ -1,0 +1,7 @@
+[
+{
+  "directory": "C:/Users/79150/Pictures/Monte-Carlo-Integration-1/build",
+  "command": "C:\\PROGRA~1\\MICROS~4\\2022\\COMMUN~1\\VC\\Tools\\Llvm\\x64\\bin\\clang.exe -g -Xclang -gcodeview -O0 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=gnu17 -o CMakeFiles\\Monte-Carlo.dir\\main.c.obj -c C:\\Users\\79150\\Pictures\\Monte-Carlo-Integration-1\\main.c",
+  "file": "C:\\Users\\79150\\Pictures\\Monte-Carlo-Integration-1\\main.c"
+}
+]

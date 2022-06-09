@@ -1,0 +1,22 @@
+The system is: Windows - 10.0.19043 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/x64/bin/clang.exe 
+Build flags: 
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+
+The C compiler identification is Clang, found in "C:/Users/79150/Pictures/Monte-Carlo-Integration-1/build/CMakeFiles/3.21.21080301-MSVC_2/CompilerIdC/CMakeCCompilerId.o"
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: C:/Users/79150/Pictures/Monte-Carlo-Integration-1/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/PROGRA~1/MICROS~4/2022/COMMUN~1/Common7/IDE/COMMON~1/MICROS~1/CMake/Ninja/ninja.exe cmTC_21e08 && [1/2] Building C object CMakeFiles/cmTC_21e08.dir/CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_21e08.exe
+
+
+

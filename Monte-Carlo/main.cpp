@@ -4,8 +4,8 @@
 
 double f(double x);
 // double inter(double a, double b, double bordy, int count, int n);
-double inter(double a, double b, double bordy, int n);
-double der(double a, double b, double e);
+double intergral(double a, double b, double bordy, int n);
+double higher_point(double a, double b, double e, std::string function);
 
 int main() {
     std::string function;
@@ -20,7 +20,7 @@ int main() {
     double b = 0; // предел интегрирования справа
     printf("Set right limit of integration ");
     scanf_s("%lf", &b);
-    double bordy = der(a, b, 0.001, function); // граница y compare der() and bordy!!!!
+    double bordy = higher_point(a, b, 0.001, function); // граница y compare der() and bordy!!!!
     // printf("Set border y ");
     // scanf_s("%lf", &bordy);
     //    ((rand() % (b - a + 1)) + 10) x in range from a to b
@@ -35,7 +35,7 @@ int main() {
     //     // if (f(x) > y)   
     //     //     count++;
     // }
-    printf("Shape below graph is %lf", inter(a, b, bordy, n, function));
+    printf("Shape below graph is %lf", intergral(a, b, bordy, n, function));
     // printf("Hello world");
     return 0;
 }

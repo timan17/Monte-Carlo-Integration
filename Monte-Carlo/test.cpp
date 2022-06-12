@@ -24,16 +24,17 @@
 //   REQUIRE(u > 220000000);
 // }
 
-// TEST_CASE("CHECK_BORDER") {
-//   std::string function;
-//   printf("Write the function ");
+TEST_CASE("CHECK_BORDER") {
+  std::string function = "5*x";
+  printf("Write the function ");
 //   std::getline(std::cin, function); // запарсим функцию)
-//   for (double a = 0.0; a < 10.0; a++) {
-//     for(double b = a + 1.0; b < 20.0; b++) {
-//       REQUIRE(f(b, function) == der(a, b, 0.001));
-//     }
-//   }
-// }
+  for (double a = 0.0; a < 10.0; a++) {
+    for(double b = a + 1.0; b < 10.0; b++) {
+      REQUIRE(abs(f(b, function) == higher_point(a, b, 0.001, function)) < 0.1);
+    }
+  }
+}
+
 TEST_CASE("CHECK_PARSER") {
     REQUIRE(f(10, "2*x") == 20);
     REQUIRE(f(10, "x^2") == 100);
@@ -45,5 +46,5 @@ TEST_CASE("CHECK_PARSER") {
 
 TEST_CASE("CHECK_PARSER2") {
     REQUIRE(f(0, "x/2") == 0);
-    REQUIRE(f(0, "2/x") == 0); // Мда, может, позже исправлю....
+    REQUIRE(f(0, "2/x") == 0); // Мда, 1/0=0, к счастью, на интеграл это не должно повлиять
 }

@@ -3,39 +3,32 @@
 #include "Monte-Carlo.hpp"
 
 double f(double x);
-// double inter(double a, double b, double bordy, int count, int n);
-double intergral(double a, double b, double bordy, int n);
-double higher_point(double a, double b, double e, std::string function);
+double intergral(double a, double b, double bordy, int num, std::string function, int choice);
+double higher_point(double a, double b, double e, std::string function, int choice);
 
 int main() {
+    int choice = 1;
+    printf("Press 1 for cartesian coordinate system or 2 for polar coordinate system ");
+    scanf_s("%d", &choice);
+    if (choice != 1 && choice != 2) {
+        printf("EROR: you have not wrote 1 or 2");
+        exit(0);
+    }
     std::string function;
     printf("Write the function ");
-    std::getline(std::cin, function); // запарсим функцию)
-    int n = 0; // кол-во точек
+    std::cin >> function; // запарсим функцию)
+    int num = 0; // кол-во точек
     printf("Set count of dots ");
-    scanf_s("%d", &n);
+    scanf_s("%d", &num);
     double a = 0; // предел интегрирования слева
     printf("Set left limit of integratiom ");
     scanf_s("%lf", &a);
     double b = 0; // предел интегрирования справа
     printf("Set right limit of integration ");
     scanf_s("%lf", &b);
-    double bordy = higher_point(a, b, 0.001, function); // граница y compare der() and bordy!!!!
-    // printf("Set border y ");
-    // scanf_s("%lf", &bordy);
-    //    ((rand() % (b - a + 1)) + 10) x in range from a to b
-    // for (int i=0; i < n; ++i) {
-    //     // srand((unsigned int)time(NULL));
-    //     // srand((unsigned int)(time(NULL))+i);
-    //     // double x = (((double)rand()/(double)(RAND_MAX)) * (b - a)) + a;
-    //     // srand((unsigned int)(time(NULL))+i+b+a+bordY+rand());
-    //     // double y = ((double)rand()/(double)(RAND_MAX)) * bordY;
-    //     // double x = random(a, b);
-    //     // double y = random(0, bordy);
-    //     // if (f(x) > y)   
-    //     //     count++;
-    // }
-    printf("Shape below graph is %lf", intergral(a, b, bordy, n, function));
+    double border = higher_point(a, b, 0.001, function, choice); // граница y compare der() and bordy!!!!
+    printf("Shape below graph is %lf\n", intergral(a, b, border, num, function, choice));
+    // printf("Accuracy is %lf", accuracy());
     // printf("Hello world");
     return 0;
 }

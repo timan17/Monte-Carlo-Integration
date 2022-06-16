@@ -1,12 +1,15 @@
 #include <math.h>
 #include <random>
 #include <stdlib.h>
+#include <stdio.h>
 #include <iostream>
 #include "../parser/fparser.hh"
-#define PI 3.14
+#define PI 3.1415926535897932
 
 double f(double x, std::string function) {
     FunctionParser fparser;
+    fparser.AddConstant("pi", 3.1415926535897932);
+    fparser.AddConstant("e", 2.7182818284590452);
     fparser.Parse(function, "x");
     return fparser.Eval(&x);
 }
@@ -21,7 +24,7 @@ double random(double a, double b) {
 double intergral(double a, double b, double border, int num, std::string function, int choice) {
     int count = 0; // счётчик точек под графиком функции
     if (choice == 2) {
-        function = "(1/2)*(" + function + ")^2";
+        function = "0.5*(" + function + ")^2";
     }
     for (int i = 0; i < num; i++) {
         double x = random(a, b);
@@ -34,42 +37,59 @@ double intergral(double a, double b, double border, int num, std::string functio
 }
 
 double higher_point(double a, double b, double e, std::string function, int choice) {
-    e = 0.001;
-    // double v[2] = {0, 0};
-    // double h = 0;
     double g = 0;
     if (choice == 2) {
-        function = "(1/2)*(" + function + ")^2";
+        function = "0.5*(" + function + ")^2";
     }
     for (double i = a; i < b; i += e) {
-        // v[0] = v[1];
-        // double u = f(i, function);
         g = std::max(g, f(i, function));
-        // v[1] = (f(i+e, function)-u)/e;
-        // if (v[1] <= 0 && v[0] > 0){
-        //     h = std::max(h, u);
-        // }
     }
     return g;
 }
 
-double truth_value(double * S, int num) {
+double truth_value(double * S, int count) {
     double result = 0;
-    for (int i = 0; i < num; i++) {
+    for (int i = 0; i < count; i++) {
         result += S[i];
     }
-    return result / num;
+    return result / (double)count;
 }
 
-double summ_of_delta_x(double * S, int num) {
+double summ_of_delta_x(double * S, int count) {
     double result = 0;
-    double truth_x = truth_value(S, num);
-    for (int i = 0; i < num; i++) {
-        result = pow((S[i]-truth_x), 2);
+    double truth_x = truth_value(S, count);
+    for (int i = 0; i < count; i++) {
+        result += pow((S[i]-truth_x), 2);
     }
     return result;
 }
 
-double accuracy(double * S, int num) { // Оценка погрешности
-    return sqrt(summ_of_delta_x(S, num)/((num-1)*num));
+double getRatio(int num) {
+    FILE * fp;
+    double ratio = 0;
+    int n = 0;
+    double ratio1 = 0;
+    int n1 = 0;
+    fp = fopen("../../Monte-Carlo/ratios_of_Student.txt", "r");
+    do {
+        n1 = n;
+        ratio1 = ratio;
+        fscanf(fp, "%d",&n);
+        fscanf(fp, "%lf",&ratio);
+    } while (n <= num);
+    fclose(fp);
+    if (n+(n1 - n)/2 >= num)
+        return ratio1;
+    return ratio;
+}
+
+double accuracy(double * S, int num, int count) { // Оценка 
+    return getRatio(num)*sqrt(summ_of_delta_x(S, count)/((count-1)*count));
+}
+
+void integral_cycle(double * S, double a, double b, double border, int num, std::string function, int choice, int count) {
+    for (int j = 0; j < count; j++) {
+        S[j] = intergral(a, b, border, num, function, choice);
+        printf("%d Integral is %lf\n", j+1, S[j]);
+    }
 }

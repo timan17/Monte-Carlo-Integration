@@ -4,10 +4,8 @@
 #include "Monte-Carlo.hpp"
 #include "Draw.h"
 
-// double f(double x, std::string function);
-// double intergral(double a, double b, double bordy, int num, std::string function, int choice);
-void integral_cycle(double * S, double a, double b, double border, int num, std::string function, int choice, int count);
-double higher_point(double a, double b, double e, std::string function, int choice);
+void integral_cycle(double * S, double a, double b, double border, int num, std::string function, int count);
+double higher_point(double a, double b, double e, std::string function);
 double accuracy(double * S, int num, int count);
 
 int main() {
@@ -20,7 +18,13 @@ int main() {
     }
     std::string function;
     printf("Write the function ");
-    std::cin >> function; // запарсим функцию)
+    if (choice == 2)
+        function = "0.5*(" + function + ")^2";
+    std::cin >> function; // вводим функцию (в будущем она запарсится)
+    if (choice == 2) {
+        printf("Do it in polar coordinate system is unreal, but we can use formula f = 0.5*(f)^2\n");
+        function = "0.5*(" + function + ")^2";
+    }
     int num = 0; // кол-во точек
     printf("Set count of dots (10^5 dots - 3 sec for each integral) ");
     scanf("%d", &num);
@@ -33,8 +37,7 @@ int main() {
     double e = 0; // дискретизация
     printf("Set sampling frequency (better to use e = 0.001) ");
     scanf("%lf", &e);
-    double border = higher_point(a, b, e, function, choice); // граница y compare der() and bordy!!!!
-    // printf("Shape below graph is %lf\n", intergral(a, b, border, num, function, choice));
+    double border = higher_point(a, b, e, function); // глобальный экстремум
     int count = 0;
     printf("Set count of integrals ");
     scanf("%d", &count);
@@ -45,14 +48,8 @@ int main() {
     if (flag != 1)
         exit(0);
     double * S = (double *)malloc(sizeof(double)*count);
-    // for (int j = 0; j < count; j++ ) {
-    //     S[j] = intergral(a, b, border, num, function, choice);
-    //     printf("Integral is %lf\n", S[j]);
-    // }
-    integral_cycle(S, a, b, border, num, function, choice, count);
+    integral_cycle(S, a, b, border, num, function, count);
     printf("Accuracy is %lf +- %lf\n", truth_value(S, count), accuracy(S, num, count));
-    // printf("Accuracy is %lf", accuracy());
-    // printf("Hello world");
     Draw(num, a, b, e, border, function);
     return 0;
 }

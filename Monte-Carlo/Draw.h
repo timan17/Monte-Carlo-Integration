@@ -9,6 +9,11 @@
 void Draw(int num, double a, double b, double e, double border, std::string function) {
     GnuplotPipe gp;
     std::stringstream ss;
+    int n = 0;
+    while (function.find("^") != -1) { // замена ^ (использует parser) на ** (gnuplot использует)
+        n = function.find("^");
+        function.replace(n, 1, "**");
+    }
     ss << " set yr [" << 0 << ":" << border << "]\n";
     gp.sendLine(ss.str());
     ss.clear();

@@ -95,13 +95,13 @@ TEST_CASE("CHECK_CARTESIAN") {
     val.push_back(393.333);
     vec.push_back("e^x");
     val.push_back(22025);
+    printf("\nCatesian coordinate system\n");
     for (std::string function : vec) {
         border = higher_point(a, b, 0.001, function);
+        std::cout << "\n" << function << "\n";
         integral_cycle(S, a, b, border, num, function, count);
         truth = truth_value(S, count);
         accur = accuracy(S, num, count);
-        printf("%lf\n", truth);
-        printf("%lf\n", accur);
         REQUIRE(val.at(j) < truth + accur);
         REQUIRE(val.at(j) > truth - accur);
         j++;
@@ -132,9 +132,11 @@ TEST_CASE("CHECK_POLAR") {
     val.push_back(13055);
     vec.push_back("e^x");
     val.push_back(121291298.602);
+    printf("\nPolar coordinate system\n");
     for (std::string function : vec) {
         function = "0.5*(" + function + ")^2";
         border = higher_point(a, b, 0.001, function);
+        std::cout << "\n" << vec.at(j) << "\n";
         integral_cycle(S, a, b, border, num, function, count);
         truth = truth_value(S, count);
         accur = accuracy(S, num, count);

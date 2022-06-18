@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <iostream>
 #include "../parser/fparser.hh"
-#define PI 3.1415926535897932
 
 double f(double x, std::string function) {
     FunctionParser fparser;
@@ -23,11 +22,8 @@ double random(double a, double b) {
     return distribution(mt);
 }
 
-double intergral(double a, double b, double border, int num, std::string function, int choice) {
-    int count = 0; // счётчик точек под графиком функции
-    if (choice == 2) {
-        function = "0.5*(" + function + ")^2";
-    }
+double intergral(double a, double b, double border, int num, std::string function) {
+    int count = 0;
     for (int i = 0; i < num; i++) {
         double x = random(a, b);
         double y = random(0, border);
@@ -38,15 +34,26 @@ double intergral(double a, double b, double border, int num, std::string functio
     return ((double)count*(double)(b-a)*(double)border)/(double)num;
 }
 
-double higher_point(double a, double b, double e, std::string function, int choice) {
+double higher_point(double a, double b, double e, std::string function) {
     double g = 0;
-    if (choice == 2) {
-        function = "0.5*(" + function + ")^2";
-    }
     for (double i = a; i < b; i += e) {
-        g = std::max(g, f(i, function));
+        if (f(i, function) > g)
+            g = f(i, function);
     }
     return g;
+}
+
+double higher_point_x(double a, double b, double e, std::string function) {
+    double g = 0;
+    double x = 0;
+    for (double i = a; i < b; i += e) {
+        double fun = f(i, function);
+        if (fun > g) {
+            g = fun;
+            x = i;
+        }
+    }
+    return x;
 }
 
 double truth_value(double * S, int count) {
@@ -85,13 +92,13 @@ double getRatio(int num) {
     return ratio;
 }
 
-double accuracy(double * S, int num, int count) { // Оценка 
+double accuracy(double * S, int num, int count) {
     return getRatio(num)*sqrt(summ_of_delta_x(S, count)/((count-1)*count));
 }
 
-void integral_cycle(double * S, double a, double b, double border, int num, std::string function, int choice, int count) {
+void integral_cycle(double * S, double a, double b, double border, int num, std::string function, int count) {
     for (int j = 0; j < count; j++) {
-        S[j] = intergral(a, b, border, num, function, choice);
+        S[j] = intergral(a, b, border, num, function);
         printf("%d Integral is %lf\n", j+1, S[j]);
     }
 }

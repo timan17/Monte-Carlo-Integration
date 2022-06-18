@@ -28,14 +28,14 @@ class GnuplotPipe {
  public:
    inline GnuplotPipe(bool persist = true) {
        std::cout << "Opening gnuplot... ";
-       pipe = popen(persist ? "C:\\\"Program Files\"\\gnuplot\\bin\\gnuplot.exe -persist" : "C:\\\"Program Files\"\\gnuplot\\bin\\gnuplot.exe", "w");
+       pipe = _popen(persist ? "C:\\\"Program Files\"\\gnuplot\\bin\\gnuplot.exe -persist" : "C:\\\"Program Files\"\\gnuplot\\bin\\gnuplot.exe", "w");
        if (!pipe)
            std::cout << "failed!" << std::endl;
        else
            std::cout << "succeded." << std::endl;
    }
    inline virtual ~GnuplotPipe(){
-       if (pipe) pclose(pipe);
+       if (pipe) _pclose(pipe);
    }
 
    void sendLine(const std::string& text, bool useBuffer = false){

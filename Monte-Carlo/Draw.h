@@ -14,6 +14,14 @@ void Draw(int num, double a, double b, double e, double border, std::string func
         n = function.find("^");
         function.replace(n, 1, "**");
     }
+    while (function.find("e") != -1) { // замена e (использует parser) на 2.7182818284590452 (gnuplot использует)
+        n = function.find("e");
+        function.replace(n, 1, "2.7182818284590452");
+    }
+    while (function.find("pi") != -1) { // замена pi (использует parser) на 3.1415926535897932 (gnuplot использует)
+        n = function.find("pi");
+        function.replace(n, 2, "3.1415926535897932");
+    }
     ss << " set yr [" << 0 << ":" << border << "]\n";
     gp.sendLine(ss.str());
     ss.clear();

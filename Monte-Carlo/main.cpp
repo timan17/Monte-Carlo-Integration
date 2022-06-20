@@ -11,53 +11,45 @@ void higher_lower__point_x_and_minus_border(double a, double b, double e, std::s
 double accuracy(double * S, int num, int count);
 
 int main() {
-    // int choice = 1;
-    // printf("Press 1 for cartesian coordinate system or 2 for polar coordinate system ");
-    // scanf("%d", &choice);
-    // if (choice != 1 && choice != 2) {
-    //     printf("EROR: you have not wrote 1 or 2");
-    //     exit(0);
-    // }
-    // std::string function;
-    // printf("Write the function ");
-    // if (choice == 2)
-    //     function = "0.5*(" + function + ")^2";
-    // std::cin >> function; // вводим функцию (в будущем она запарсится)
-    // if (choice == 2) {
-    //     printf("Do it in polar coordinate system is unreal, but we can use formula f = 0.5*(f)^2\n");
-    //     function = "0.5*(" + function + ")^2";
-    // }
-    // int num = 0; // кол-во точек
-    // printf("Set count of dots (10^5 dots - 3 sec for each integral) ");
-    // scanf("%d", &num);
-    // double a = 0; // предел интегрирования слева
-    // printf("Set left limit of integration ");
-    // scanf("%lf", &a);
-    // double b = 0; // предел интегрирования справа
-    // printf("Set right limit of integration ");
-    // scanf("%lf", &b);
-    // double e = 0; // дискретизация
-    // printf("Set sampling frequency (better to use e = 0.001) ");
-    // scanf("%lf", &e);
-    // double border = higher_point(a, b, e, function); // глобальный экстремум
-    // int count = 0;
-    // printf("Set count of integrals ");
-    // scanf("%d", &count);
-    // printf("Are you sure to continue?\n");
-    // printf("Press 1 (is yes) or another number (is no)\n");
-    // int flag = 0;
-    // scanf("%d", &flag);
-    // if (flag != 1)
-    //     exit(0);
     int choice = 1;
-    std::string function = "(x-5)^2-5";
-    int num = 10000;
-    double a = -10;
-    double b = 10;
+    printf("Press 1 for cartesian coordinate system or 2 for polar coordinate system ");
+    scanf("%d", &choice);
+    if (choice != 1 && choice != 2) {
+        printf("EROR: you have not wrote 1 or 2");
+        exit(0);
+    }
+    std::string function;
+    printf("Write the function ");
+    if (choice == 2)
+        function = "0.5*(" + function + ")^2";
+    std::cin >> function; // вводим функцию (в будущем она запарсится)
+    if (choice == 2) {
+        printf("Do it in polar coordinate system is unreal, but we can use formula f = 0.5*(f)^2\n");
+        function = "0.5*(" + function + ")^2";
+    }
+    int num = 0; // кол-во точек
+    printf("Set count of dots (10^5 dots - 3 sec for each integral) ");
+    scanf("%d", &num);
+    double a = 0; // предел интегрирования слева
+    printf("Set left limit of integration ");
+    scanf("%lf", &a);
+    double b = 0; // предел интегрирования справа
+    printf("Set right limit of integration ");
+    scanf("%lf", &b);
+    double e = 0.001; // дискретизация
+    printf("Set sampling frequency (better to use e = 0.001) ");
+    scanf("%lf", &e);
+    int count = 0;
+    printf("Set count of integrals ");
+    scanf("%d", &count);
+    printf("Are you sure to continue?\n");
+    printf("Press 1 (is yes) or another number (is no)\n");
+    int flag = 0;
+    scanf("%d", &flag);
+    if (flag != 1)
+        exit(0);
     double c = 0;
     double d = 0;
-    double e = 0.001;
-    int count = 5;
     double xmin = 0;
     double xmax = 0;
     double border = 0;

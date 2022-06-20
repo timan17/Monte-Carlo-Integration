@@ -1,6 +1,5 @@
 #ifndef MONTE_CARLO_DRAW_H
 #define MONTE_CARLO_DRAW_H
-#define AXIS '#92088a'
 
 #include "Monte-Carlo.hpp"
 #include <map>
@@ -12,8 +11,8 @@ void Draw(int num, double a, double b, double e, double minus_border, double bor
     std::stringstream ss;
     std::ofstream data("data.dat"); //
     std::ofstream line("line.dat"); // для отрисовки  x = 0
-    line << 0 << ' ' << minus_border << ' ' << AXIS << '\n';
-    line << 0 << ' ' << border << ' ' << AXIS << '\n';
+    line << 0 << ' ' << minus_border << ' ' << '\n';
+    line << 0 << ' ' << border << ' ' << '\n';
     line.close();
     for (int i = 0; i < num; ++i) {
         double x = random(a, b);
@@ -24,11 +23,11 @@ void Draw(int num, double a, double b, double e, double minus_border, double bor
         // if (yf > y)
         //     data << x << ' ' << y << ' ' << '1' << '\n';
         if (y < yf && 0 < y)
-            data << x << ' ' << y << ' ' << '0' << '\n';
+            data << x << ' ' << y << ' ' << '0' << '\n'; // +
         if (y > yf && 0 > y)
-            data << x << ' ' << y << ' ' << '1' << '\n';
+            data << x << ' ' << y << ' ' << '1' << '\n'; // -
         if ((y < yf && 0 > y) || (y > yf && 0 < y))
-            data << x << ' ' << y << ' ' << '2' << '\n';
+            data << x << ' ' << y << ' ' << '2' << '\n'; // оставшиеся
     }
     data.close(); //
     int n = 0;
@@ -46,9 +45,10 @@ void Draw(int num, double a, double b, double e, double minus_border, double bor
     ss << " set xr [" << a << ":" << b << "]\n";
     gp.sendLine(ss.str());
     ss.clear();
+    gp.sendLine("set key textcolor '#ed9a09'\n");
     gp.sendLine("set palette model RGB maxcolors 3\n");
     gp.sendLine("set palette defined ( 0 '#1B8E13', 1 '#EF0000', 2 '#13238E')\n"); // 0: + 1: - 2: остальные
-    ss << "plot 0, (\"line.dat\") with lines lt 1, " << function << ", ";
+    ss << "plot 0, (\"line.dat\") with lines lt 1, " << function << " lc '#319208', ";
     ss.clear();
     ss << "(\"data.dat\") with points pt 7 ps 0.1 palette";
     gp.sendLine(ss.str());

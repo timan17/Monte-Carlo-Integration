@@ -162,7 +162,7 @@ TEST_CASE("CHECK_CARTESIAN") {
     for (std::string function : vec) {
         // border = higher_point(a, b, 0.001, function);
         std::cout << "\n" << function << "\n";
-        integral_block(a, b, er, function, num, count, truth, accur);
+        integral_block(a, b, er, function, minus_border, border, num, count, truth, accur);
         REQUIRE(val.at(j) < truth + accur);
         REQUIRE(val.at(j) > truth - accur);
         j++;
@@ -201,7 +201,7 @@ TEST_CASE("CHECK_POLAR") {
         // border = higher_point(a, b, 0.001, function);
         function = "0.5*(" + function + ")^2";
         std::cout << "\n" << function << "\n";
-        integral_block(a, b, er, function, num, count, truth, accur);
+        integral_block(a, b, er, function, minus_border, border,num, count, truth, accur);
         REQUIRE(val.at(j) < truth + accur);
         REQUIRE(val.at(j) > truth - accur);
         j++;

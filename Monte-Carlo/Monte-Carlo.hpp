@@ -39,8 +39,6 @@ double intergral(double a, double b, double c, double d, double minus_border, do
     // }
     for (int i = 0; i < num; i++) {
         x = random(a, b);
-        if (minus_border > 0)
-            minus_border = 0;
         y = random(minus_border, border);
         double fun = f(x, function);
         if (y > 0 && y < fun)
@@ -52,19 +50,21 @@ double intergral(double a, double b, double c, double d, double minus_border, do
 }
 
 void higher_lower_point(double a, double b, double e, std::string function, double &ymax, double &ymin) {
-    double high = 0;
-    double low = 0;
+    double high = f(a, function);
+    double low = high;
     double fun = f(a, function);
     for (double x = a+e; x <= b; x += e) {
         double fin = f(x, function);
         if (fin > fun) {
-            high = fin;
+            high = std::max(high, fin);
         } else {
-            low = fin;
+            low = std::min(low, fin);
         }
         fun = fin;
     }
     ymax = high;
+    if (low > 0)
+        low = 0;
     ymin = low;
 }
 
@@ -142,9 +142,9 @@ void integral_cycle(double * S, double a, double b, double c, double d, double m
     }
 }
 
-void integral_block(double a, double b, double e, std::string function, int num, int count, double &truth, double &accur) {
-    double minus_border = 0;
-    double border = 0;
+void integral_block(double a, double b, double e, std::string function, double &minus_border, double &border, int num, int count, double &truth, double &accur) {
+    minus_border = 0;
+    border = 0;
     double xmin = 0;
     double xmax = 0;
     double c = 0;

@@ -25,28 +25,28 @@ TEST_CASE("CHECK_RATIO") {
 }
 
 TEST_CASE("CHECK_PARSER") {
-    double numround = 1000;
+    double numRound = 1000;
     double x = random(-10, 10);
     REQUIRE(compare(f(x, "abs(x)"), abs(x), 10000));
     x = random(0, 10);
-    REQUIRE(compare(f(x, "x"), x, numround));
-    REQUIRE(compare(f(x, "x+x"), 2*x, numround));
-    REQUIRE(compare(f(x, "x-x"), 0, numround));
-    REQUIRE(compare(f(x, "x/x"), 1, numround));
-    REQUIRE(compare(f(x, "1/x"), 1/x, numround));
-    REQUIRE(compare(f(x, "x/1"), x, numround));
-    REQUIRE(compare(f(x, "2*x"), 2*x, numround));
-    REQUIRE(compare(f(x, "x/2"), x/2, numround));
-    REQUIRE(compare(f(x, "x+1^x"), x+1, numround));
-    REQUIRE(compare(f(x, "x^x"), pow(x, x), numround));
-    REQUIRE(compare(f(x, "x^x+1"), pow(x, x)+1, numround));
-    REQUIRE(compare(f(x, "x^(x+1)"), pow(x,x+1), numround));
-    REQUIRE(compare(f(x, "(x^x)+1"), pow(x,x)+1, numround));
-    REQUIRE(compare(f(x, "(x+1)^x"), pow(x+1, x), numround));
-    REQUIRE(compare(f(x, "1+x^x"), pow(x,x)+1, numround));
-    REQUIRE(compare(f(x, "(1+x)^x"), pow(1+x,x), numround));
-    REQUIRE(compare(f(x, "e^x"), pow(e, x), numround));
-    REQUIRE(compare(f(x, "pi^x"), pow(pi, x), numround));
+    REQUIRE(compare(f(x, "x"), x, numRound));
+    REQUIRE(compare(f(x, "x+x"), 2*x, numRound));
+    REQUIRE(compare(f(x, "x-x"), 0, numRound));
+    REQUIRE(compare(f(x, "x/x"), 1, numRound));
+    REQUIRE(compare(f(x, "1/x"), 1/x, numRound));
+    REQUIRE(compare(f(x, "x/1"), x, numRound));
+    REQUIRE(compare(f(x, "2*x"), 2*x, numRound));
+    REQUIRE(compare(f(x, "x/2"), x/2, numRound));
+    REQUIRE(compare(f(x, "x+1^x"), x+1, numRound));
+    REQUIRE(compare(f(x, "x^x"), pow(x, x), numRound));
+    REQUIRE(compare(f(x, "x^x+1"), pow(x, x)+1, numRound));
+    REQUIRE(compare(f(x, "x^(x+1)"), pow(x,x+1), numRound));
+    REQUIRE(compare(f(x, "(x^x)+1"), pow(x,x)+1, numRound));
+    REQUIRE(compare(f(x, "(x+1)^x"), pow(x+1, x), numRound));
+    REQUIRE(compare(f(x, "1+x^x"), pow(x,x)+1, numRound));
+    REQUIRE(compare(f(x, "(1+x)^x"), pow(1+x,x), numRound));
+    REQUIRE(compare(f(x, "e^x"), pow(e, x), numRound));
+    REQUIRE(compare(f(x, "pi^x"), pow(pi, x), numRound));
 }
 
 TEST_CASE("CHECK_RANDOM") {
@@ -67,7 +67,7 @@ TEST_CASE("CHECK_MAX") {
     double d = 0;
     double xmax = 0;
     double xmin = 0;
-    double er = 0.001;
+    double step = 0.001;
     double minus_border = 0;
     double border = 0;
     std::vector<std::string> vec;
@@ -91,7 +91,7 @@ TEST_CASE("CHECK_MAX") {
     vec.push_back("1-x");
     val.push_back(0.0);
     for (std::string function: vec) {
-        higher_lower__point_x_and_minus_border(a, b, er, function, xmax, xmin, c, d);
+        higher_lower__point_x_and_minus_border(a, b, step, function, xmax, xmin, c, d);
         REQUIRE(compare(xmax, val.at(j), 100));
         j++;
     }
@@ -115,7 +115,7 @@ TEST_CASE("CHECK_C_D") {
     double d = 0;
     double xmax = 0;
     double xmin = 0;
-    double er = 0.001;
+    double step = 0.001;
     double minus_border = 0;
     double border = 0;
     std::vector<std::string> vec;
@@ -124,7 +124,7 @@ TEST_CASE("CHECK_C_D") {
     val.push_back(5-sqrt(5));
     val.push_back(5+sqrt(5));
     for (std::string function: vec) {
-        higher_lower__point_x_and_minus_border(a, b, er, function, xmax, xmin, c, d);
+        higher_lower__point_x_and_minus_border(a, b, step, function, xmax, xmin, c, d);
         REQUIRE(compare(c, val.at(j++), 100));
         REQUIRE(compare(d, val.at(j++), 100));
     }
@@ -144,7 +144,7 @@ TEST_CASE("CHECK_CARTESIAN") {
     std::vector<double> val;
     double truth = 0;
     double accur = 0;
-    double er = 0.001;
+    double step = 0.001;
     
     vec.push_back("(x-5)^2-5");
     val.push_back(33.333);
@@ -160,9 +160,9 @@ TEST_CASE("CHECK_CARTESIAN") {
     val.push_back(22025);
     printf("\nCatesian coordinate system\n");
     for (std::string function : vec) {
-        // border = higher_point(a, b, 0.001, function);
         std::cout << "\n" << function << "\n";
-        integral_block(a, b, er, function, minus_border, border, num, count, truth, accur);
+        startCond(a, b, c, d, step, function, minus_border, border);
+        calcIntegral(a, b, c, d, function, minus_border, border, num, count, truth, accur);
         REQUIRE(val.at(j) < truth + accur);
         REQUIRE(val.at(j) > truth - accur);
         j++;
@@ -183,25 +183,25 @@ TEST_CASE("CHECK_POLAR") {
     std::vector<double> val;
     double truth = 0;
     double accur = 0;
-    double er = 0.001;
+    double step = 0.001;
     
 
-    // vec.push_back("x");
-    // val.push_back(50);
-    // vec.push_back("10+2*x");
-    // val.push_back(200);
-    // vec.push_back("x^2");
-    // val.push_back(333.333);
-    // vec.push_back("1+x+x^2");
-    // val.push_back(393.333);
+    vec.push_back("x");
+    val.push_back(166.66);
+    vec.push_back("10+2*x");
+    val.push_back(2167.67);
+    vec.push_back("x^2");
+    val.push_back(10000);
+    vec.push_back("1+x+x^2");
+    val.push_back(13055);
     vec.push_back("e^x");
     val.push_back(121000000);
     printf("\nPolar coordinate system\n");
     for (std::string function : vec) {
-        // border = higher_point(a, b, 0.001, function);
         function = "0.5*(" + function + ")^2";
         std::cout << "\n" << function << "\n";
-        integral_block(a, b, er, function, minus_border, border,num, count, truth, accur);
+        startCond(a, b, c, d, step, function, minus_border, border);
+        calcIntegral(a, b, c, d, function, minus_border, border,num, count, truth, accur);
         REQUIRE(val.at(j) < truth + accur);
         REQUIRE(val.at(j) > truth - accur);
         j++;

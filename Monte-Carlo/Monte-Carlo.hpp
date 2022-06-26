@@ -22,38 +22,66 @@ double random(double a, double b) {
     return distribution(mt);
 }
 
-double intergral(double a, double b, double border, int num, std::string function) {
-    int count = 0;
-    for (int i = 0; i < num; i++) {
-        double x = random(a, b);
-        double y = random(0, border);
-        if (f(x, function) > y) {
-            count++;
-        }
-    }
-    return ((double)count*(double)(b-a)*(double)border)/(double)num;
-}
-
-double higher_point(double a, double b, double e, std::string function) {
-    double g = 0;
-    for (double i = a; i < b; i += e) {
-        if (f(i, function) > g)
-            g = f(i, function);
-    }
-    return g;
-}
-
-double higher_point_x(double a, double b, double e, std::string function) {
-    double g = 0;
+double intergral(double a, double b, double c, double d, double minus_border, double border, int num, std::string function) {
+    int countPoints = 0;
     double x = 0;
-    for (double i = a; i < b; i += e) {
-        double fun = f(i, function);
-        if (fun > g) {
-            g = fun;
-            x = i;
-        }
+    double y = 0;
+    for (int i = 0; i < num; i++) {
+        x = random(a, b);
+        y = random(minus_border, border);
+        double compareFunction = f(x, function);
+        if (y > 0 && y < compareFunction)
+            countPoints++;
+        if (y < 0 && y > compareFunction)
+            countPoints--;
     }
-    return x;
+    return ((double)countPoints*(b-a)*(border-minus_border))/(double)num;
+}
+
+void higher_lower_point(double a, double b, double step, std::string function, double &border, double &minus_border) {
+    double high = f(a, function);
+    double low = high;
+    double compareFunction = f(a, function);
+    for (double x = a+step; x <= b; x += step) {
+        double fun = f(x, function);
+        if (fun > compareFunction) {
+            high = std::max(high, fun);
+        } else {
+            low = std::min(low, fun);
+        }
+        compareFunction = fun;
+    }
+    border = high;
+    if (low > 0)
+        low = 0;
+    minus_border = low;
+}
+
+void higher_lower__point_x_and_minus_border(double a, double b, double step, std::string function, double &xmax, double &xmin, double &c, double &d) {
+    double high = 0;
+    double low = 0;
+    double fun = f(a, function);
+    bool flag1 = true;
+    bool flag2 = true;
+    for (double x = a+step; x < b; x += step) {
+        double fin = f(x, function);
+        if (fun > 0 && fin <= 0 && flag1 == true) {
+            c = x-step;
+            flag1 == false;
+        }
+        if (fun < 0 && fin >= 0 && flag2 == true) {
+            d = x;
+            flag2 == false;
+        }
+        if (fin > fun) {
+            high = x;
+        } else {
+            low = x;
+        }
+        fun = fin;
+    }
+    xmax = high;
+    xmin = low;
 }
 
 double truth_value(double * S, int count) {
@@ -96,9 +124,29 @@ double accuracy(double * S, int num, int count) {
     return getRatio(num)*sqrt(summ_of_delta_x(S, count)/((count-1)*count));
 }
 
-void integral_cycle(double * S, double a, double b, double border, int num, std::string function, int count) {
+void integral_cycle(double * S, double a, double b, double c, double d, double minus_border, double border, int num, std::string function, int count) {
     for (int j = 0; j < count; j++) {
-        S[j] = intergral(a, b, border, num, function);
-        printf("%d Integral is %lf\n", j+1, S[j]);
+        S[j] = intergral(a, b, c, d, minus_border, border, num, function);
     }
+}
+
+void printIntegral(double * S, int count) {
+    for (int j = 0; j < count; j++) {
+        printf("Integral is %lf\n", S[j]);
+    }
+}
+
+void calcIntegral(double a, double b, double c, double d, std::string function, double &minus_border, double &border, int num, int count, double &truth, double &accur) {
+    double * S = (double *)malloc(sizeof(double)*count);
+    integral_cycle(S, a, b, c, d, minus_border, border, num, function, count);
+    printIntegral(S, count);
+    truth = truth_value(S, count);
+    accur = abs(accuracy(S, num, count));
+}
+
+void startCond(double a, double b, double &c, double &d, double step, std::string function, double &minus_border, double &border) {
+    double xmin = 0;
+    double xmax = 0;
+    higher_lower_point(a, b, step, function, border, minus_border);
+    higher_lower__point_x_and_minus_border(a, b, step, function, xmax, xmin, c, d);
 }

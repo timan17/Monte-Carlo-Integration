@@ -6,3 +6,5 @@
 
 Ссылка на статью: https://en.wikipedia.org/wiki/Monte_Carlo_method
 
+(Перед использованием данного проекта необходимо скачать gnuplot и установить в "C:\Program Files\gnuplot".
+Ссылка на скачивание gnuplot: https://sourceforge.net/projects/gnuplot/files/gnuplot/)
